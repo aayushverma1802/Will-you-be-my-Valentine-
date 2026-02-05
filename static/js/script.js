@@ -465,27 +465,25 @@ function handleNo() {
         let imageToShow = window.NO_IMAGES[imageIndex];
         
         setTimeout(() => {
-            // Ensure proper URL encoding
+            // Use encodeURI to properly encode the entire URL path
             let finalImagePath = imageToShow;
             if (finalImagePath && typeof finalImagePath === 'string') {
-                // Replace spaces and parentheses with URL encoding
-                finalImagePath = finalImagePath.replace(/ /g, '%20')
-                                               .replace(/\(/g, '%28')
-                                               .replace(/\)/g, '%29');
+                // Split URL and encode only the filename part
+                const urlParts = finalImagePath.split('/');
+                const filename = urlParts[urlParts.length - 1];
+                const encodedFilename = encodeURIComponent(filename);
+                urlParts[urlParts.length - 1] = encodedFilename;
+                finalImagePath = urlParts.join('/');
             }
             
             memeImage.src = finalImagePath;
             memeImage.style.opacity = '1';
             
-            // Error handler with retry
+            // Error handler - try original path if encoded fails
             memeImage.onerror = function() {
-                console.error('Failed to load image:', finalImagePath);
-                console.error('Trying alternative path...');
-                // Try with different encoding
-                const altPath = imageToShow.replace(/ /g, '%20');
-                if (altPath !== finalImagePath) {
-                    memeImage.src = altPath;
-                }
+                console.error('Failed to load encoded image:', finalImagePath);
+                console.error('Trying original path:', imageToShow);
+                memeImage.src = imageToShow;
             };
         }, 500);
     }
