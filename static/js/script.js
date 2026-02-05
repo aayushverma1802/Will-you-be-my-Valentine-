@@ -464,25 +464,28 @@ function handleNo() {
         const imageIndex = (noClickCount - 1) % window.NO_IMAGES.length;
         let imageToShow = window.NO_IMAGES[imageIndex];
         
-        // Ensure proper URL encoding for images with special characters
-        if (imageToShow && typeof imageToShow === 'string') {
-            // Decode first in case Flask already encoded it, then re-encode properly
-            try {
-                imageToShow = decodeURIComponent(imageToShow);
-            } catch(e) {
-                // Already decoded or invalid
-            }
-            // Encode spaces and special characters properly
-            imageToShow = imageToShow.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
-        }
-        
         setTimeout(() => {
-            memeImage.src = imageToShow;
+            // Ensure proper URL encoding
+            let finalImagePath = imageToShow;
+            if (finalImagePath && typeof finalImagePath === 'string') {
+                // Replace spaces and parentheses with URL encoding
+                finalImagePath = finalImagePath.replace(/ /g, '%20')
+                                               .replace(/\(/g, '%28')
+                                               .replace(/\)/g, '%29');
+            }
+            
+            memeImage.src = finalImagePath;
             memeImage.style.opacity = '1';
-            // Add error handler to log if image fails to load
+            
+            // Error handler with retry
             memeImage.onerror = function() {
-                console.error('Failed to load image:', imageToShow);
-                console.error('Image index:', imageIndex, 'Click count:', noClickCount);
+                console.error('Failed to load image:', finalImagePath);
+                console.error('Trying alternative path...');
+                // Try with different encoding
+                const altPath = imageToShow.replace(/ /g, '%20');
+                if (altPath !== finalImagePath) {
+                    memeImage.src = altPath;
+                }
             };
         }, 500);
     }
