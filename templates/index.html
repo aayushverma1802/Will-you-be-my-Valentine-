@@ -159,14 +159,13 @@
         window.NO_IMAGE_PATH = "{{ url_for('static', filename='images/1e2e74baa0496a5f0767d68a929dd04e.jpg') }}";
         window.YES_IMAGE_PATH = "{{ url_for('static', filename='images/1869f3fc3dfc0bb09bc64ebb116e00cd.png') }}";
         // NO button images array - will loop through these in order
-        // Using encodeURIComponent for files with spaces/parentheses
         window.NO_IMAGES = [
             "{{ url_for('static', filename='images/1e2e74baa0496a5f0767d68a929dd04e.jpg') }}",
-            "{{ url_for('static', filename='images/download (3).jpg') | replace(' ', '%20') | replace('(', '%28') | replace(')', '%29') }}",
+            "{{ url_for('static', filename='images/download (3).jpg') }}",
             "{{ url_for('static', filename='images/download.jpg') }}",
-            "{{ url_for('static', filename='images/download (4).jpg') | replace(' ', '%20') | replace('(', '%28') | replace(')', '%29') }}",
-            "{{ url_for('static', filename='images/download (2).jpg') | replace(' ', '%20') | replace('(', '%28') | replace(')', '%29') }}",
-            "{{ url_for('static', filename='images/download (1).jpg') | replace(' ', '%20') | replace('(', '%28') | replace(')', '%29') }}"
+            "{{ url_for('static', filename='images/download (4).jpg') }}",
+            "{{ url_for('static', filename='images/download (2).jpg') }}",
+            "{{ url_for('static', filename='images/download (1).jpg') }}"
         ];
     </script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
