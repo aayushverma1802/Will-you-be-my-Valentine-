@@ -662,6 +662,37 @@ body {
     }
 }
 
+/* Developer Credit - Only visible in landscape mode */
+.developer-credit {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    display: none;
+    z-index: 1000;
+}
+
+.developer-credit p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-weight: 300;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    margin: 0;
+}
+
+/* Show developer credit only in landscape mode */
+@media (orientation: landscape) {
+    .developer-credit {
+        display: block;
+    }
+}
+
+/* Hide in portrait mode */
+@media (orientation: portrait) {
+    .developer-credit {
+        display: none !important;
+    }
+}
+
 /* Left Section */
 .left-section {
     text-align: center;
