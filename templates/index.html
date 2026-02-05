@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Will You Be My Valentine? 💕</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -140,13 +140,13 @@
 
     <!-- Start Audio (plays automatically when website loads) -->
     <audio id="startAudio" loop preload="auto">
-        <source src="{{ url_for('static', filename='audio/start.mp3') }}" type="audio/mpeg">
+        <source src="/static/audio/start.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
     <!-- YES Audio (plays when YES button is clicked) -->
     <audio id="yesAudio" preload="auto">
-        <source src="{{ url_for('static', filename='audio/montagem-miau-sped-up.mp3') }}" type="audio/mpeg">
+        <source src="/static/audio/montagem-miau-sped-up.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
@@ -155,19 +155,19 @@
 
     <!-- Pass Flask static URL to JavaScript -->
     <script>
-        window.STATIC_URL = "{{ url_for('static', filename='') }}";
-        window.NO_IMAGE_PATH = "{{ url_for('static', filename='images/1e2e74baa0496a5f0767d68a929dd04e.jpg') }}";
-        window.YES_IMAGE_PATH = "{{ url_for('static', filename='images/1869f3fc3dfc0bb09bc64ebb116e00cd.png') }}";
+        window.STATIC_URL = "/static/";
+        window.NO_IMAGE_PATH = "/static/images/1e2e74baa0496a5f0767d68a929dd04e.jpg";
+        window.YES_IMAGE_PATH = "/static/images/1869f3fc3dfc0bb09bc64ebb116e00cd.png";
         // NO button images array - will loop through these in order
         window.NO_IMAGES = [
-            "{{ url_for('static', filename='images/1e2e74baa0496a5f0767d68a929dd04e.jpg') }}",
-            "{{ url_for('static', filename='images/download (3).jpg') }}",
-            "{{ url_for('static', filename='images/download.jpg') }}",
-            "{{ url_for('static', filename='images/download (4).jpg') }}",
-            "{{ url_for('static', filename='images/download (2).jpg') }}",
-            "{{ url_for('static', filename='images/download (1).jpg') }}"
+            "/static/images/1e2e74baa0496a5f0767d68a929dd04e.jpg",
+            "/static/images/download%20(3).jpg",
+            "/static/images/download.jpg",
+            "/static/images/download%20(4).jpg",
+            "/static/images/download%20(2).jpg",
+            "/static/images/download%20(1).jpg"
         ];
     </script>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="/static/js/script.js"></script>
 </body>
 </html>
