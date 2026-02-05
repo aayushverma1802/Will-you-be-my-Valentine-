@@ -313,29 +313,29 @@ function handleYes() {
     
     // Change image with smooth transition
     if (memeImage && window.YES_IMAGE_PATH) {
-        memeImage.style.opacity = '0';
-        memeImage.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        memeImage.style.transform = 'scale(0.9)';
+    memeImage.style.opacity = '0';
+    memeImage.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    memeImage.style.transform = 'scale(0.9)';
+    
+    setTimeout(() => {
+            memeImage.src = window.YES_IMAGE_PATH;
+        memeImage.alt = 'YAY! You said YES! 💕';
+        memeImage.style.opacity = '1';
+            memeImage.style.transform = 'scale(1.1)';
         
         setTimeout(() => {
-            memeImage.src = window.YES_IMAGE_PATH;
-            memeImage.alt = 'YAY! You said YES! 💕';
-            memeImage.style.opacity = '1';
-            memeImage.style.transform = 'scale(1.1)';
-            
-            setTimeout(() => {
-                memeImage.style.transform = 'scale(1)';
+            memeImage.style.transform = 'scale(1)';
             }, 200);
-        }, 600);
+    }, 600);
     }
     
     // Hide buttons and question
     if (buttonsContainer) {
-        buttonsContainer.style.display = 'none';
+    buttonsContainer.style.display = 'none';
     }
     
     if (questionContainer) {
-        questionContainer.style.display = 'none';
+    questionContainer.style.display = 'none';
     }
     
     if (subtitle) {
@@ -344,7 +344,7 @@ function handleYes() {
     
     // Show success message
     if (successMessage) {
-        successMessage.classList.add('show');
+    successMessage.classList.add('show');
     }
     
     // Create confetti
@@ -449,7 +449,7 @@ function handleNo() {
         setTimeout(() => {
             prankMessage.classList.remove('show');
             setTimeout(() => {
-                prankMessage.style.display = 'none';
+            prankMessage.style.display = 'none';
             }, 300);
         }, 5000);
     }
@@ -462,11 +462,28 @@ function handleNo() {
         // Calculate which image to show (loop through array)
         // First click (noClickCount = 1) shows index 0, second click shows index 1, etc.
         const imageIndex = (noClickCount - 1) % window.NO_IMAGES.length;
-        const imageToShow = window.NO_IMAGES[imageIndex];
+        let imageToShow = window.NO_IMAGES[imageIndex];
+        
+        // Ensure proper URL encoding for images with special characters
+        if (imageToShow && typeof imageToShow === 'string') {
+            // Decode first in case Flask already encoded it, then re-encode properly
+            try {
+                imageToShow = decodeURIComponent(imageToShow);
+            } catch(e) {
+                // Already decoded or invalid
+            }
+            // Encode spaces and special characters properly
+            imageToShow = imageToShow.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
+        }
         
         setTimeout(() => {
             memeImage.src = imageToShow;
             memeImage.style.opacity = '1';
+            // Add error handler to log if image fails to load
+            memeImage.onerror = function() {
+                console.error('Failed to load image:', imageToShow);
+                console.error('Image index:', imageIndex, 'Click count:', noClickCount);
+            };
         }, 500);
     }
     
@@ -516,17 +533,17 @@ function moveNoButton() {
 
 // Ensure YES Button Always Visible
 function ensureYesButtonVisible() {
-    const yesBtn = document.getElementById('yesBtn');
+            const yesBtn = document.getElementById('yesBtn');
     if (!yesBtn) return;
     
     const ensureVisible = () => {
-        if (yesBtn) {
-            yesBtn.style.setProperty('opacity', '1', 'important');
-            yesBtn.style.setProperty('visibility', 'visible', 'important');
-            yesBtn.style.setProperty('display', 'inline-flex', 'important');
-            yesBtn.style.setProperty('position', 'relative', 'important');
-            yesBtn.style.setProperty('z-index', '1001', 'important');
-            yesBtn.style.setProperty('pointer-events', 'auto', 'important');
+    if (yesBtn) {
+                yesBtn.style.setProperty('opacity', '1', 'important');
+                yesBtn.style.setProperty('visibility', 'visible', 'important');
+                yesBtn.style.setProperty('display', 'inline-flex', 'important');
+                yesBtn.style.setProperty('position', 'relative', 'important');
+                yesBtn.style.setProperty('z-index', '1001', 'important');
+                yesBtn.style.setProperty('pointer-events', 'auto', 'important');
         }
     };
     
@@ -537,12 +554,12 @@ function ensureYesButtonVisible() {
     document.addEventListener('mousemove', ensureVisible, { passive: true });
     
     // Check on every frame
-    function checkEveryFrame() {
+        function checkEveryFrame() {
         if (yesBtn && !yesButtonClicked) {
             ensureVisible();
+            }
+            requestAnimationFrame(checkEveryFrame);
         }
-        requestAnimationFrame(checkEveryFrame);
-    }
     checkEveryFrame();
 }
 
@@ -558,8 +575,8 @@ window.addEventListener('resize', function() {
 
 // Prevent right-click context menu (optional prank)
 document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-    return false;
+                e.preventDefault();
+                return false;
 });
 
 // Add keyboard shortcuts (optional)
