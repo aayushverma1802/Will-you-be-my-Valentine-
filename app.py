@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
+import os
 
 # Flask app - serves static files from static/ folder
 app = Flask(__name__, 
@@ -10,11 +11,13 @@ app = Flask(__name__,
 def index():
     return render_template('index.html')
 
-# Explicit route for static files (needed for Vercel)
-# Flask's built-in static serving may not work correctly on Vercel serverless
+# Explicit route for static files (needed for Vercel serverless)
 @app.route('/static/<path:path>')
 def serve_static(path):
-    return app.send_static_file(path)
+    # Get absolute path to static directory
+    # Works in both local development and Vercel serverless
+    static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+    return send_from_directory(static_dir, path)
 
 if __name__ == '__main__':
     app.run(debug=True)
