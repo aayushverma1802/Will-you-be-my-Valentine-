@@ -1,10 +1,8 @@
 from flask import Flask, render_template
-import os
 
-# Flask app - Vercel will serve static files from public/ automatically
-app = Flask(__name__, 
-            static_folder=None,  # Disable Flask static serving - let Vercel handle it
-            template_folder='templates')
+# Flask app - Vercel serves static files from public/ directory automatically
+# For local dev, Flask will serve from static/ folder
+app = Flask(__name__, template_folder='templates')
 
 @app.route('/')
 def index():
