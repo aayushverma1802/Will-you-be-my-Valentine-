@@ -465,26 +465,38 @@ function handleNo() {
         let imageToShow = window.NO_IMAGES[imageIndex];
         
         setTimeout(() => {
-            // Use encodeURI to properly encode the entire URL path
+            // Properly encode the URL path
             let finalImagePath = imageToShow;
             if (finalImagePath && typeof finalImagePath === 'string') {
-                // Split URL and encode only the filename part
+                // Split URL and encode only the filename part (preserve path structure)
                 const urlParts = finalImagePath.split('/');
                 const filename = urlParts[urlParts.length - 1];
-                const encodedFilename = encodeURIComponent(filename);
+                // Encode filename to handle spaces, parentheses, etc.
+                const encodedFilename = encodeURIComponent(filename).replace(/'/g, '%27');
                 urlParts[urlParts.length - 1] = encodedFilename;
                 finalImagePath = urlParts.join('/');
             }
             
+            // Set up error handler BEFORE setting src
+            memeImage.onerror = function() {
+                console.error('Failed to load image:', finalImagePath);
+                // Try with different encoding approaches
+                const urlParts = imageToShow.split('/');
+                const filename = urlParts[urlParts.length - 1];
+                // Try space as %20, parentheses encoded
+                const altEncoded = urlParts.slice(0, -1).join('/') + '/' + filename.replace(/ /g, '%20').replace(/\(/g, '%28').replace(/\)/g, '%29');
+                console.log('Trying alternative encoding:', altEncoded);
+                memeImage.src = altEncoded;
+                // If that also fails, try original
+                memeImage.onerror = function() {
+                    console.error('All encoding attempts failed, using original:', imageToShow);
+                    memeImage.src = imageToShow;
+                    memeImage.onerror = null; // Prevent infinite loop
+                };
+            };
+            
             memeImage.src = finalImagePath;
             memeImage.style.opacity = '1';
-            
-            // Error handler - try original path if encoded fails
-            memeImage.onerror = function() {
-                console.error('Failed to load encoded image:', finalImagePath);
-                console.error('Trying original path:', imageToShow);
-                memeImage.src = imageToShow;
-            };
         }, 500);
     }
     
