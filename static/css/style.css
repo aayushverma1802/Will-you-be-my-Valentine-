@@ -666,9 +666,11 @@ body {
 .developer-credit {
     position: fixed;
     bottom: 10px;
-    right: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     display: none;
     z-index: 1000;
+    text-align: center;
 }
 
 .developer-credit p {
