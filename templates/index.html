@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💕</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <!-- Landscape Orientation Message on Loading Screen -->
+        <div class="landscape-message" id="landscapeMessage">
+            <div class="landscape-content">
+                <span class="landscape-icon">📱</span>
+                <span class="landscape-text">For better experience, view on laptop 💻</span>
+            </div>
+        </div>
+        
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+            <h2 class="loading-title" id="loadingTitle">💕 Loading... 💕</h2>
+            <div class="loaded-indicator" id="loadedIndicator" style="display: none;">
+                <div class="checkmark">✓</div>
+                <h2 class="loaded-title">✨ Ready to Start! ✨</h2>
+            </div>
+            <div class="notices-container">
+                <div class="volume-notice">
+                    <div class="volume-icon">🔊</div>
+                    <p class="volume-text">Turn your volume UP!</p>
+                    <p class="volume-subtext">For the best experience 🎵</p>
+                </div>
+                <div class="laptop-notice">
+                    <div class="laptop-icon">💻</div>
+                    <p class="laptop-text">For better experience, view on laptop</p>
+                    <p class="laptop-subtext">Best viewed on desktop 💕</p>
+                </div>
+            </div>
+            <button class="loading-ok-btn" id="loadingOkBtn" onclick="hideLoadingScreen()">
+                Start 💖
+            </button>
+        </div>
+    </div>
+
+    <div class="container" id="mainContainer" style="display: none;">
+        <!-- Floating Hearts Background -->
+        <div class="hearts-container">
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+        </div>
+
+        <!-- Sparkles Effect -->
+        <div class="sparkles-container" id="sparklesContainer"></div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="content-wrapper">
+                <!-- Left Section - Text and Image -->
+                <div class="left-section">
+                    <div class="title-container">
+                        <h1 class="title animate-bounce">💕 Will You Be My Valentine? 💕</h1>
+                        <p class="subtitle">I have a question for you... 👀</p>
+                    </div>
+
+                    <!-- Image Section -->
+                    <div class="image-section">
+                        <div class="meme-container">
+                            <img src="{{ url_for('static', filename='images/spiderman-thinking-meme-hd-v0-jzdl1h8js6we1.png') }}" alt="Valentine Meme" class="meme-image" id="memeImage">
+                            <div class="image-glow"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Section - Buttons and Comments -->
+                <div class="right-section">
+                    <!-- Question Text -->
+                    <div class="question-container">
+                        <p class="question">Will you be my Valentine? ❤️</p>
+                        <p class="question-hint">Choose wisely... 😏</p>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="buttons-container">
+                        <button class="btn btn-yes" id="yesBtn" onclick="handleYes()">
+                            <span class="btn-text">YES! 💖</span>
+                            <span class="btn-shine"></span>
+                        </button>
+                        <button class="btn btn-no" id="noBtn" onmouseover="moveNoButton()" onclick="handleNo()">
+                            <span class="btn-text">NO 😢</span>
+                        </button>
+                    </div>
+
+                    <!-- NO Click Counter (Hidden Initially) -->
+                    <div class="no-counter" id="noCounter">
+                        <p>You've tried <span id="noCount">0</span> times... 😏</p>
+                        <p class="counter-hint">There's only one right answer! 😄</p>
+                    </div>
+
+                    <!-- Success Message (Hidden Initially) -->
+                    <div class="success-message" id="successMessage">
+                        <div class="success-icon">🎉</div>
+                        <h2>YAY! 🎊</h2>
+                        <p class="success-text">You made the right choice! 💕</p>
+                        <p class="love-text">I love you! ❤️💖💕</p>
+                        <div class="celebration">🎈🎉🎊💐🌹💕❤️💖🎈🎉🎊</div>
+                        <div class="final-message">
+                            <p>You're stuck with me now! 😄💕</p>
+                        </div>
+                    </div>
+
+                    <!-- Prank Message (Hidden Initially) -->
+                    <div class="prank-message" id="prankMessage">
+                        <h2 id="prankTitle">Nice Try! 😏</h2>
+                        <p id="prankText">But you can only click YES! 💕</p>
+                        <p class="funny-text" id="prankHint">There's only one right answer here! 😄</p>
+                        <div class="prank-emoji" id="prankEmoji">🤷‍♀️💕</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Audio (plays automatically when website loads) -->
+    <audio id="startAudio" loop preload="auto">
+        <source src="{{ url_for('static', filename='audio/start.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- YES Audio (plays when YES button is clicked) -->
+    <audio id="yesAudio" preload="auto">
+        <source src="{{ url_for('static', filename='audio/montagem-miau-sped-up.mp3') }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Pass Flask static URL to JavaScript -->
+    <script>
+        window.STATIC_URL = "{{ url_for('static', filename='') }}";
+        window.NO_IMAGE_PATH = "{{ url_for('static', filename='images/1e2e74baa0496a5f0767d68a929dd04e.jpg') }}";
+        window.YES_IMAGE_PATH = "{{ url_for('static', filename='images/1869f3fc3dfc0bb09bc64ebb116e00cd.png') }}";
+        // NO button images array - will loop through these in order
+        window.NO_IMAGES = [
+            "{{ url_for('static', filename='images/1e2e74baa0496a5f0767d68a929dd04e.jpg') }}",
+            "{{ url_for('static', filename='images/download (3).jpg') }}",
+            "{{ url_for('static', filename='images/download.jpg') }}",
+            "{{ url_for('static', filename='images/download (4).jpg') }}",
+            "{{ url_for('static', filename='images/download (2).jpg') }}",
+            "{{ url_for('static', filename='images/download (1).jpg') }}"
+        ];
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
