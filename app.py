@@ -12,10 +12,9 @@ def index():
 def serve_static(path):
     return send_from_directory('static', path)
 
-# Vercel serverless function handler
+# Vercel serverless function handler - proper format
 def handler(request):
-    with app.app_context():
-        return app.full_dispatch_request()
+    return app(request.environ, lambda status, headers: None)
 
 if __name__ == '__main__':
     app.run(debug=True)
